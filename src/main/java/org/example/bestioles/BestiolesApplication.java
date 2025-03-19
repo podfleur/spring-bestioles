@@ -1,11 +1,7 @@
 package org.example.bestioles;
 
-import org.example.bestioles.model.Animal;
-import org.example.bestioles.model.Espece;
-import org.example.bestioles.model.Personne;
-import org.example.bestioles.repository.AnimalRepository;
-import org.example.bestioles.repository.EspeceRepository;
-import org.example.bestioles.repository.PersonneRepository;
+import org.example.bestioles.model.*;
+import org.example.bestioles.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -69,14 +65,17 @@ public class BestiolesApplication implements CommandLineRunner {
         List<Personne> personnes2 = personneRepository.findByAgeGreaterThanEqual(33);
         System.out.println("Personnes de 33 ans ou plus : " + personnes2);
 
-        //Espece espece = especeRepository.findById(1).orElseThrow();
-        //List<Animal> animal1 = animalRepository.findAnimalByEspece(1);
-        //System.out.println("Animaux par espèce : " + animal1);
+        // Espece espece = especeRepository.findById(1).orElseThrow();
+        // List<Animal> animal1 = animalRepository.findAnimalByEspece(1);
+        // System.out.println("Animaux par espèce : " + animal1);
 
         List<String> couleurs = List.of("Noir", "Blanc", "Brun");
         List<Animal> animal2 = animalRepository.findByCouleurIn(couleurs);
-        System.out.println("Animaux par list couleur : " + animal2);
+        System.out.println("Animaux par liste de couleur : " + animal2);
 
+        long countMales = animalRepository.countBySexe("Mâle");
+        long countFemelles = animalRepository.countBySexe("Femelle");
+        System.out.println("Nombre d'animaux mâles : " + countMales);
+        System.out.println("Nombre d'animaux femelles : " + countFemelles);
     }
-
 }
