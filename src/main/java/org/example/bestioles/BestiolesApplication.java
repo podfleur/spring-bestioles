@@ -1,5 +1,6 @@
 package org.example.bestioles;
 
+import jakarta.transaction.Transactional;
 import org.example.bestioles.model.*;
 import org.example.bestioles.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,57 +26,58 @@ public class BestiolesApplication implements CommandLineRunner {
     }
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
-        System.out.println("DÉBUT TP03");
+        System.out.println("DÉBUT TP");
 
         System.out.println("Liste des personnes en base :");
         personneRepository.findAll().forEach(System.out::println);
 
-        Personne newPerson = new Personne();
-        newPerson.setPrenom("Alice");
-        newPerson.setNom("desmerveilles");
-        newPerson.setLogin("Ado");
-        newPerson.setMdp("epsiepsi");
-        newPerson.setAge(30);
-        newPerson.setActive(true);
+        Personne personWithoutAnimal = new Personne();
+        personWithoutAnimal.setPrenom("Jean");
+        personWithoutAnimal.setNom("Dupont");
+        personWithoutAnimal.setLogin("jean");
+        personWithoutAnimal.setMdp("password");
+        personWithoutAnimal.setAge(40);
+        personWithoutAnimal.setActive(true);
 
-        personneRepository.save(newPerson);
-        System.out.println("Nouvelle personne ajoutée : " + newPerson);
+        personneRepository.save(personWithoutAnimal);
+        System.out.println("Nouvelle personne ajoutée sans animal : " + personWithoutAnimal);
 
+        Personne personWithAnimal = new Personne();
+        personWithAnimal.setPrenom("Emma");
+        personWithAnimal.setNom("Durand");
+        personWithAnimal.setLogin("emmad");
+        personWithAnimal.setMdp("securepwd");
+        personWithAnimal.setAge(28);
+        personWithAnimal.setActive(true);
+
+        personneRepository.save(personWithAnimal);
+
+        Animal animal = new Animal();
+        animal.setNom("Rex");
+        animal.setSexe("Mâle");
+        animal.setCouleur("Noir");
+
+        animalRepository.save(animal);
+        System.out.println("Nouvelle personne avec animal ajoutée : " + personWithAnimal);
+        System.out.println("Animal ajouté : " + animal);
+
+        System.out.println("Liste des personnes AVANT suppression des personnes sans animaux :");
         personneRepository.findAll().forEach(System.out::println);
 
-        personneRepository.deleteById(newPerson.getId());
-        System.out.println("Personne supprimée (ID " + newPerson.getId() + ")");
+        System.out.println("Suppression des personnes sans animaux...");
+        personneRepository.deletePersonnesWithoutAnimals();
 
-        System.out.println("Liste des personnes après suppression :");
+        System.out.println("Liste des personnes APRES suppression des personnes sans animaux :");
         personneRepository.findAll().forEach(System.out::println);
 
-        System.out.println("FIN TP03");
-        System.out.println("DÉBUT TP04");
+        System.out.println("Ajout de 5 personnes aléatoires...");
+        personneRepository.createRandomPersons(5);
 
-        Optional<Espece> espece1 = especeRepository.findFirstByNomcommun("Chat");
-        espece1.ifPresent(E -> System.out.println("Espèce trouvée : " + E.getNomcommun()));
+        System.out.println("Liste des personnes après insertion :");
+        personneRepository.findAll().forEach(System.out::println);
 
-        List<Espece> espece2 = especeRepository.findByNomlatinIsContainingIgnoreCase("Canis");
-        System.out.println("Espèces trouvées : " + espece2);
-
-        List<Personne> personnes1 = personneRepository.findByNomOrPrenom("Nero", "Bill");
-        System.out.println("Personnes ou nom demandé: " + personnes1);
-
-        List<Personne> personnes2 = personneRepository.findByAgeGreaterThanEqual(33);
-        System.out.println("Personnes de 33 ans ou plus : " + personnes2);
-
-        // Espece espece = especeRepository.findById(1).orElseThrow();
-        // List<Animal> animal1 = animalRepository.findAnimalByEspece(1);
-        // System.out.println("Animaux par espèce : " + animal1);
-
-        List<String> couleurs = List.of("Noir", "Blanc", "Brun");
-        List<Animal> animal2 = animalRepository.findByCouleurIn(couleurs);
-        System.out.println("Animaux par liste de couleur : " + animal2);
-
-        long countMales = animalRepository.countBySexe("Mâle");
-        long countFemelles = animalRepository.countBySexe("Femelle");
-        System.out.println("Nombre d'animaux mâles : " + countMales);
-        System.out.println("Nombre d'animaux femelles : " + countFemelles);
+        System.out.println("FIN TP");
     }
 }
