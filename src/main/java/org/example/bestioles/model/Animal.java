@@ -65,4 +65,15 @@ public class Animal {
     public void setPersonnes(List<Personne> personnes) {
         this.personnes = personnes;
     }
+
+    @Override
+    public String toString() {
+        return "Animal{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", couleur='" + couleur + '\'' +
+                ", sexe='" + sexe + '\'' +
+                ", espece=" + (espece != null ? espece.getNomcommun() : "Aucune") +
+                '}';
+    }
 }

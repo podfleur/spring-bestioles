@@ -11,9 +11,9 @@ public class Espece {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "common_name")
-    private String nom_commun;
+    private String nomcommun;
     @Column(name = "latin_name")
-    private String nom_latin;
+    private String nomlatin;
     @OneToMany(mappedBy = "espece")
     private List<Animal> animaux;
 
@@ -21,20 +21,20 @@ public class Espece {
         return id;
     }
 
-    public String getNom_commun() {
-        return nom_commun;
+    public String getNomcommun() {
+        return nomcommun;
     }
 
-    public void setNom_commun(String nom_commun) {
-        this.nom_commun = nom_commun;
+    public void setNomcommun(String nomcommun) {
+        this.nomcommun = nomcommun;
     }
 
-    public String getNom_latin() {
-        return nom_latin;
+    public String getNomlatin() {
+        return nomlatin;
     }
 
-    public void setNom_latin(String nom_latin) {
-        this.nom_latin = nom_latin;
+    public void setNomlatin(String nomlatin) {
+        this.nomlatin = this.nomlatin;
     }
 
     public List<Animal> getAnimaux() {
@@ -43,5 +43,14 @@ public class Espece {
 
     public void setAnimaux(List<Animal> animaux) {
         this.animaux = animaux;
+    }
+
+    @Override
+    public String toString() {
+        return "Espece{" +
+                "id=" + id +
+                ", nomCommun='" + nomcommun + '\'' +
+                ", nomLatin='" + nomlatin + '\'' +
+                '}';
     }
 }
